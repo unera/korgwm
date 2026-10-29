@@ -1,0 +1,28 @@
+#!/bin/sh
+# Load the modules that do not need a running X server and check that the
+# bundled sample configuration is valid YAML with the documented keys.
+set -e
+
+perl -Ilib -e '
+    use strict;
+    use warnings;
+    use X11::korgwm::Config;
+    use X11::korgwm::Common;
+    use X11::korgwm::Layout;
+    use X11::korgwm::Hotkeys;
+    print "modules load\n";
+'
+
+perl -Ilib -e '
+    use strict;
+    use warnings;
+    use YAML::Tiny;
+
+    my $sample = YAML::Tiny->read("korgwm.conf.sample");
+    die "korgwm.conf.sample is not valid YAML\n" unless $sample;
+    my $cfg = $sample->[0];
+    for my $key (qw(api_port border_width hotkeys ws_names)) {
+        die "sample config lacks $key\n" unless exists $cfg->{$key};
+    }
+    print "sample config parses\n";
+'

@@ -1,48 +1,77 @@
 korgwm for Debian
-================================
+=================
 
 This package provides korgwm, a tiling window manager for X11 written in Perl.
 
 Configuration
 -------------
-Example configuration is available in /usr/share/doc/korgwm/examples/korgwm.conf.sample.
-Copy it to ~/.config/korgwm/korgwm.conf and customize as needed.
+An example configuration is available in
+/usr/share/doc/korgwm/examples/korgwm.conf.sample.  Copy it to
+~/.config/korgwm/korgwm.conf and customise as needed.
 
-korgwm searches for configuration files in the following order:
+korgwm searches for configuration files in the following order, merging
+each one it finds:
+
   /etc/korgwm/korgwm.conf
   /usr/local/etc/korgwm/korgwm.conf
   ~/.korgwmrc
   ~/.config/korgwm/korgwm.conf
 
-Session Configuration
+Note that the merge is shallow: if you override a section such as `hotkeys`
+or `rules`, specify the whole section.
+
+Multi-monitor setup
+-------------------
+The default `randr_cmd` is
+
+  korgwm_xrandr || xrandr --auto
+
+`korgwm_xrandr` is a user-provided script that korgwm looks up in PATH to
+lay out monitors on every RandR event; when it is absent, `xrandr --auto`
+is used and you may see "korgwm_xrandr: not found" on stderr.  A working
+example is shipped as
+
+  /usr/share/doc/korgwm/examples/korgwm_xrandr
+
+Copy it to ~/bin/korgwm_xrandr, adapt the output names to your hardware
+and make it executable.  See also /usr/share/doc/korgwm/Screen_Management.md
+in the upstream sources.
+
+Session configuration
 ---------------------
-For best integration with display managers (lightdm, gdm, sddm), select
-"korgwm" from the session menu at login. The korgwm-session wrapper sets
-up the appropriate environment variables (XDG, NO_AT_BRIDGE, etc).
+To start korgwm from a display manager (lightdm, gdm, sddm), select the
+"korgwm" session at login.  The korgwm-session wrapper sets up the
+environment (XDG, NO_AT_BRIDGE, Java non-reparenting hint, keyboard layout)
+and then executes korgwm.
 
 Starting from .xinitrc
---------------------
-To start korgwm manually:
+----------------------
+To start korgwm manually from a text console:
 
     korgwm-session
 
-Or directly without the wrapper:
+or, without the wrapper:
 
     korgwm
 
 Documentation
 -------------
-Perl POD documentation is available via perldoc:
+Manual pages: korgwm(1) and korgwm-session(1).
+
+Perl POD is available through perldoc:
 
     perldoc X11::korgwm
+
+Upstream documentation, including API.md and doc/Screen_Management.md, is
+available from https://github.com/zhmylove/korgwm.
 
 Dependencies
 ------------
 X11 libraries: libxcb, libxinerama, libxrandr
-Perl modules: AnyEvent, AnyEvent::DBus, Net::DBus, Gtk3,
-             Glib::Object::Introspection, YAML::Tiny, X11::XCB
+Perl modules: AnyEvent, AnyEvent::DBus (libanyevent-dbus-perl), Net::DBus,
+              Gtk3, Glib::Object::Introspection, YAML::Tiny, X11::XCB
 
-Bug Reporting
+Bug reporting
 -------------
-Report bugs to the Debian Bug Tracking System or upstream:
+Please report bugs to the Debian Bug Tracking System, or upstream at
 https://github.com/zhmylove/korgwm/issues

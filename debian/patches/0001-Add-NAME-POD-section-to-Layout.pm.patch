@@ -1,0 +1,20 @@
+Description: add the missing NAME POD section to X11::korgwm::Layout
+ The module ships POD starting with DESCRIPTION, so pod2man generates a manual
+ page without a NAME section and lintian reports a bad whatis entry.
+Forwarded: not-yet
+Author: Dmitry Oboukhov <unera@debian.org>
+Last-Update: 2026-10-29
+
+--- a/lib/X11/korgwm/Layout.pm
++++ b/lib/X11/korgwm/Layout.pm
+@@ -10,6 +10,10 @@
+ use X11::korgwm::Common;
+ use X11::korgwm::Window;
+ 
++=head1 NAME
++
++X11::korgwm::Layout - window layout calculation for korgwm
++
+ =head1 DESCRIPTION
+ 
+ The idea behind this module lays in arranging the windows in a proper order.

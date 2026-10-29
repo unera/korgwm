@@ -1,0 +1,76 @@
+=head1 NAME
+
+korgwm-session - start a korgwm X11 session
+
+=head1 SYNOPSIS
+
+B<korgwm-session>
+
+=head1 DESCRIPTION
+
+B<korgwm-session> prepares the environment and then replaces itself with
+B<korgwm>(1).  It is meant to be used as the C<Exec> line of a display
+manager session (see F</usr/share/xsessions/korgwm.desktop>) or as the
+last command of F<~/.xinitrc>.
+
+The wrapper performs the following steps:
+
+=over 4
+
+=item *
+
+exports C<XDG_CURRENT_DESKTOP=korgwm> and a sane C<XDG_RUNTIME_DIR>;
+
+=item *
+
+sets C<_JAVA_AWT_WM_NONREPARENTING=1>, because korgwm does not reparent
+windows, and C<NO_AT_BRIDGE=1>;
+
+=item *
+
+imports C<DISPLAY> and C<XAUTHORITY> into the systemd user session and
+restarts C<xdg-desktop-portal-gtk> so that portals work;
+
+=item *
+
+sets the root cursor, disables the screen saver and DPMS, merges
+F<~/.Xresources> if present;
+
+=item *
+
+applies a keyboard layout with B<setxkbmap>(1) unless F<~/.xkbmap>
+exists;
+
+=item *
+
+executes B<korgwm>.
+
+=back
+
+=head1 FILES
+
+=over 4
+
+=item F<~/.korgwmrc>, F<~/.config/korgwm/korgwm.conf>, F</etc/korgwm/korgwm.conf>
+
+korgwm configuration files, read in that order.
+
+=item F<~/.xkbmap>
+
+If this file exists, B<korgwm-session> leaves the keyboard layout alone.
+
+=item F<~/.Xresources>
+
+Merged into the X resource database when present.
+
+=back
+
+=head1 SEE ALSO
+
+B<korgwm>(1), B<setxkbmap>(1), B<xrdb>(1), B<xsetroot>(1)
+
+=head1 AUTHOR
+
+Sergei Zhmylev E<lt>zhmylove@narod.ruE<gt>
+
+=cut

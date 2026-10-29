@@ -7,7 +7,9 @@ override_dh_auto_clean:
 	[ -f Makefile ] && $(MAKE) distclean || true
 
 override_dh_auto_configure:
-	dh_auto_configure -- INSTALLDIRS=vendor
+	# INSTALLMAN1DIR=none: the manual page for script/korgwm is generated
+	# below with a proper .1 suffix instead of MakeMaker's .1p
+	dh_auto_configure -- INSTALLDIRS=vendor INSTALLMAN1DIR=none
 
 override_dh_auto_install:
 	dh_auto_install
@@ -16,9 +18,16 @@ override_dh_auto_install:
 	install -D -m 755 debian/korgwm-session $(CURDIR)/debian/korgwm/usr/bin/korgwm-session
 	install -D -m 644 debian/korgwm.desktop $(CURDIR)/debian/korgwm/usr/share/xsessions/korgwm.desktop
 	install -D -m 644 korgwm.conf.sample $(CURDIR)/debian/korgwm/usr/share/doc/korgwm/examples/korgwm.conf.sample
+	# Example RandR helper referenced by the default randr_cmd setting
+	install -D -m 755 resources/korgwm_xrandr $(CURDIR)/debian/korgwm/usr/share/doc/korgwm/examples/korgwm_xrandr
+	# Generate manual pages
+	install -d $(CURDIR)/debian/korgwm/usr/share/man/man1
+	pod2man --section=1 --center="User Commands" --name=korgwm \
+		--release="korgwm" script/korgwm \
+		$(CURDIR)/debian/korgwm/usr/share/man/man1/korgwm.1
+	pod2man --section=1 --center="User Commands" --name=korgwm-session \
+		--release="korgwm" debian/korgwm-session.pod \
+		$(CURDIR)/debian/korgwm/usr/share/man/man1/korgwm-session.1
 
-override_dh_installdocs:
-	dh_installdocs README.md API.md
-
-override_dh_installinit:
-	# No init script needed for a window manager
+override_dh_missing:
+	dh_missing --fail-missing
