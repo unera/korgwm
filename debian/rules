@@ -18,6 +18,8 @@ override_dh_auto_install:
 	install -D -m 755 debian/korgwm-session $(CURDIR)/debian/korgwm/usr/bin/korgwm-session
 	install -D -m 644 debian/korgwm.desktop $(CURDIR)/debian/korgwm/usr/share/xsessions/korgwm.desktop
 	install -D -m 644 korgwm.conf.sample $(CURDIR)/debian/korgwm/usr/share/doc/korgwm/examples/korgwm.conf.sample
+	# Packaged configuration for this repository (full hotkeys/rules set)
+	install -D -m 644 debian/etc/korgwm/korgwm.conf $(CURDIR)/debian/korgwm/etc/korgwm/korgwm.conf
 	# Example RandR helper referenced by the default randr_cmd setting
 	install -D -m 755 resources/korgwm_xrandr $(CURDIR)/debian/korgwm/usr/share/doc/korgwm/examples/korgwm_xrandr
 	# Generate manual pages

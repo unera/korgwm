@@ -42,6 +42,8 @@ BEGIN {
     $cfg->{lang_format} = " %s ";
     $cfg->{lang_names} = { 0 => chr(0x00a3), 1 => chr(0x20bd) };
     $cfg->{mouse_follow} = 1;
+    # Should the window under the pointer be focused on EnterNotify
+$cfg->{focus_follows_mouse} = 1;
     $cfg->{mouse_follow_transients} = 0;
     $cfg->{mouse_nowarp} = 0;
     $cfg->{move_follow} = 1;

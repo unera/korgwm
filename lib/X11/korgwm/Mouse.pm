@@ -126,6 +126,7 @@ sub init {
     add_event_cb(ENTER_NOTIFY, sub($evt) {
         return if $_motion_win;
         return if $prevent_enter_notify;
+        return unless $cfg->{focus_follows_mouse};
 
         my $wid = $evt->{event};
 

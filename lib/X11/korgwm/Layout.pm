@@ -11,6 +11,10 @@ use Storable qw( dclone );
 use X11::korgwm::Common;
 use X11::korgwm::Window;
 
+=head1 NAME
+
+X11::korgwm::Layout - window layout calculation for korgwm
+
 =head1 DESCRIPTION
 
 The idea behind this module lays in arranging the windows in a proper order.

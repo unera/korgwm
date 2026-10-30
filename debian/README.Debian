@@ -5,9 +5,17 @@ This package provides korgwm, a tiling window manager for X11 written in Perl.
 
 Configuration
 -------------
-An example configuration is available in
-/usr/share/doc/korgwm/examples/korgwm.conf.sample.  Copy it to
-~/.config/korgwm/korgwm.conf and customise as needed.
+This package installs a ready-to-use configuration at /etc/korgwm/korgwm.conf.
+It is a full configuration: korgwm merges files shallowly, so every section it
+finds replaces the built-in default as a whole.
+
+Note that /etc/korgwm/korgwm.conf is a normal package file, not a conffile:
+upgrading the package replaces it, local edits are lost.  To keep your own
+settings, put them in ~/.config/korgwm/korgwm.conf - that file is read last and
+wins.
+
+The pristine upstream example is still available as
+/usr/share/doc/korgwm/examples/korgwm.conf.sample.
 
 korgwm searches for configuration files in the following order, merging
 each one it finds:

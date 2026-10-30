@@ -1,3 +1,12 @@
+korgwm (6.1-3) unstable; urgency=medium
+
+  * Carry the fixes in the sources instead of quilt patches:
+    - add the missing NAME POD section to X11::korgwm::Layout
+    - add the focus_follows_mouse option (click-to-focus mode)
+  * Install the packaged configuration to /etc/korgwm/korgwm.conf.
+
+ -- Dmitry Oboukhov <unera@debian.org>  Fri, 30 Oct 2026 12:00:00 +0000
+
 korgwm (6.1-2) unstable; urgency=medium
 
   * Add a focus_follows_mouse option so the window under the pointer is no
