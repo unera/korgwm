@@ -1,3 +1,10 @@
+korgwm (6.1-2) unstable; urgency=medium
+
+  * Add a focus_follows_mouse option so the window under the pointer is no
+    longer focused unconditionally; set it to 0 for click-to-focus.
+
+ -- Dmitry Oboukhov <unera@debian.org>  Fri, 30 Oct 2026 00:00:00 +0000
+
 korgwm (6.1-1) unstable; urgency=medium
 
   * Initial release.

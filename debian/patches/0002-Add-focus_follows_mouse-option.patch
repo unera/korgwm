@@ -1,0 +1,41 @@
+Description: add a focus_follows_mouse option
+ The window under the pointer is focused on EnterNotify unconditionally, with
+ no way to switch to click-to-focus. Guard that path with a new config option
+ that defaults to the current behaviour.
+Forwarded: not-yet
+Author: Dmitry Oboukhov <unera@debian.org>
+Last-Update: 2026-10-30
+
+--- a/korgwm.conf.sample
++++ b/korgwm.conf.sample
+@@ -25,6 +25,9 @@ expose_spacing: 15
+ initial_pointer_position: center
+ # Should mouse follow the focus under certain circumstances (RTFS)
+ mouse_follow: 1
++# Should the window under the pointer be focused when the pointer enters it.
++# Set to 0 for click-to-focus.
++focus_follows_mouse: 1
+ # Should mouse warp on transients window (usually, modal dialogs like "Save file")
+ mouse_follow_transients: 0
+ # If set: tag will be switched together with a window during win_move_tag(). Stay on current tag otherwise
+--- a/lib/X11/korgwm/Config.pm
++++ b/lib/X11/korgwm/Config.pm
+@@ -42,6 +42,8 @@ BEGIN {
+     $cfg->{lang_format} = " %s ";
+     $cfg->{lang_names} = { 0 => chr(0x00a3), 1 => chr(0x20bd) };
+     $cfg->{mouse_follow} = 1;
++    # Should the window under the pointer get focused on EnterNotify
++$cfg->{focus_follows_mouse} = 1;
+     $cfg->{mouse_follow_transients} = 0;
+     $cfg->{mouse_nowarp} = 0;
+     $cfg->{move_follow} = 1;
+--- a/lib/X11/korgwm/Mouse.pm
++++ b/lib/X11/korgwm/Mouse.pm
+@@ -126,6 +126,7 @@ sub init {
+     add_event_cb(ENTER_NOTIFY, sub($evt) {
+         return if $_motion_win;
+         return if $prevent_enter_notify;
++        return unless $cfg->{focus_follows_mouse};
+ 
+         my $wid = $evt->{event};
+ 
