@@ -89,13 +89,23 @@ sub init {
     });
 
     add_event_cb(BUTTON_PRESS, sub($evt) {
-        # Skip clicks on root and non-floating windows
-        $_motion_win = $windows->{ $evt->{child} };
+        # The press is reported either for the root window (mod+click grab, the
+        # window is in child) or for a client window itself, because managed
+        # windows select BUTTON_PRESS. Selecting an event mask does not consume
+        # the event, so the application still gets its click.
+        my $wid = $evt->{event} == $X->root->id ? $evt->{child} : $evt->{event};
+
+        # Skip clicks on the root window and on windows we do not manage
+        $_motion_win = $windows->{$wid};
         return unless $_motion_win;
 
         # There is a case when some 'popup' (unknown to WM) window stole input focus.
         # In this case I want mod+click to forcefully focus the window under the pointer.
         $_motion_win->focus();
+
+        # Moving and resizing below belong to the mod+click grab only, so that a
+        # plain click never drags a floating window around
+        return unless $evt->{state} & MOD_MASK_4;
 
         # The code below works only for floating windows
         return unless $_motion_win->{floating};

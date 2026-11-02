@@ -56,7 +56,8 @@ $SIG{CHLD} = "IGNORE";
 # Aliases for event masks
 my %evt_masks = (x => CONFIG_WINDOW_X, y => CONFIG_WINDOW_Y, w => CONFIG_WINDOW_WIDTH, h => CONFIG_WINDOW_HEIGHT);
 # Default event mask for new windows
-my $new_window_event_mask = EVENT_MASK_ENTER_WINDOW | EVENT_MASK_PROPERTY_CHANGE | EVENT_MASK_FOCUS_CHANGE;
+my $new_window_event_mask =
+    EVENT_MASK_ENTER_WINDOW | EVENT_MASK_PROPERTY_CHANGE | EVENT_MASK_FOCUS_CHANGE | EVENT_MASK_BUTTON_PRESS;
 # Caching variable for $X->root
 my $ROOT;
 # Caching variable for WM_STATE atom
